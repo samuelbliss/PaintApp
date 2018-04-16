@@ -8,39 +8,33 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.ThumbnailUtils;
-import android.os.Environment;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
-import android.widget.ImageView;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 public class Drawer extends android.support.v7.widget.AppCompatImageView{
 
-    public int width;
+    //Declare class variables
+    public int  width;
     public  int height;
-    private float dpiPixels;
+    private float   dpiPixels;
     private Bitmap  mBitmap;
     private Canvas  mCanvas;
     private Path    mPath;
-    private Path squarePath;
+    private Path    squarePath;
     private Paint   mBitmapPaint;
-    private Paint mPaint;
-    private Paint squarePaint;
-    private enum Shape { LINE, SQUARE}
-    private Shape currentShape;
-    private DisplayMetrics dm = getResources().getDisplayMetrics();
+    private Paint   mPaint;
+    private Paint   squarePaint;
+    private enum Shape {LINE, SQUARE} //enum of possible shapes
+    private Shape currentShape; //Shape object to store current chosen shape
+    private DisplayMetrics dm = getResources().getDisplayMetrics(); //changes pixels to appropriate dpi
 
+
+    //When Drawer is created, setup all initial variables.
     public Drawer(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.setBackgroundColor(Color.WHITE);
         currentShape = Shape.LINE;
         mPaint = new Paint();
         mPaint.setColor(Color.RED);
@@ -55,7 +49,7 @@ public class Drawer extends android.support.v7.widget.AppCompatImageView{
         squarePaint.setStyle(Paint.Style.FILL);
         mBitmapPaint = new Paint(Paint.DITHER_FLAG);
         dpiPixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, dm);
-        setDrawingCacheEnabled( true );
+        setDrawingCacheEnabled( true ); //This is make sure the drawing can be saved.
     }
 
     @Override
@@ -73,14 +67,17 @@ public class Drawer extends android.support.v7.widget.AppCompatImageView{
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        //Draw all canvas paths
         canvas.drawBitmap( mBitmap, 0, 0, mBitmapPaint);
         canvas.drawPath(mPath, mPaint);
         canvas.drawPath(squarePath, squarePaint);
     }
 
+    //Variables to store x/y coordinates and the touch tolerance for drawing a line
     private float mX, mY;
     private static final float TOUCH_TOLERANCE = 4;
 
+    //Set coordinates of initial press
     private void touch_start(float x, float y) {
         if (currentShape == Shape.LINE) {
             mPath.reset();
@@ -93,6 +90,7 @@ public class Drawer extends android.support.v7.widget.AppCompatImageView{
         mY = y;
     }
 
+    //When finger drags across screen draw a quadTo line if Shape.LINE is chosen
     private void touch_move(float x, float y) {
         float dx = Math.abs(x - mX);
         float dy = Math.abs(y - mY);
@@ -105,22 +103,27 @@ public class Drawer extends android.support.v7.widget.AppCompatImageView{
         }
     }
 
+    //When finger is lifted off screen save the line drawn if Shape.LINE is chosen or
+        //place square shape if Shape.SQUARE is chosen
     private void touch_up() {
         if (currentShape == Shape.LINE) {
             mPath.lineTo(mX, mY);
-            // commit the path to our offscreen
+            // commit the path
             mCanvas.drawPath(mPath,  mPaint);
-            // kill this so we don't double draw
+            // clear current path tracking
             mPath.reset();
         } else if (currentShape == Shape.SQUARE) {
-           squarePath.addRect(mX, mY, mX + dpiPixels, mY + dpiPixels, Path.Direction.CW);
-            // commit the path to our offscreen
+            float drawPixels = dpiPixels / 2;
+            squarePath.addRect(mX - drawPixels, mY -drawPixels,
+                    mX + drawPixels, mY + drawPixels, Path.Direction.CW);
+            // commit the path
             mCanvas.drawPath(squarePath, squarePaint);
-            // kill this so we don't double draw
+            // clear current path tracking
             squarePath.reset();
         }
     }
 
+    //Run events based on touching the screen
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         float x = event.getX();
@@ -143,6 +146,7 @@ public class Drawer extends android.support.v7.widget.AppCompatImageView{
         return true;
     }
 
+    //To clear the drawing, erase cache, force invalidate, and re-enable cache
     public void clearDrawing() {
     setDrawingCacheEnabled(false);
 
@@ -150,23 +154,15 @@ public class Drawer extends android.support.v7.widget.AppCompatImageView{
     invalidate();
 
     setDrawingCacheEnabled(true);
-}
-
-    //Currently Not Working ... getDrawingCache returns null for some reason.
-    public void saveDrawing() throws IOException {
-        Bitmap b = getDrawingCache();
-        FileOutputStream outStream = null;
-        File sdCard = Environment.getExternalStorageDirectory();
-        File dir = new File(sdCard.getAbsolutePath() + "/YourFolderName");
-        dir.mkdirs();
-        String fileName = String.format("%d.jpg", System.currentTimeMillis());
-        File outFile = new File(dir, fileName);
-        outStream = new FileOutputStream(outFile);
-        b.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-        outStream.flush();
-        outStream.close();
     }
 
+    //send image of current drawing in a Bitmap
+    public Bitmap saveDrawing() {
+        Bitmap b = getDrawingCache();
+        return b;
+    }
+
+    //changeColor is called to change the paint color. It rotates through five pre-set colors.
     public void changeColor() {
         if (mPaint.getColor() == Color.RED) {
             mPaint.setColor(Color.BLUE);
@@ -187,6 +183,8 @@ public class Drawer extends android.support.v7.widget.AppCompatImageView{
         }
     }
 
+    //changeSize is called to change the paint size. It rotates through five pre-set sizes
+        //strokeWidth is for drawing a line, dpiPixels is for resizing the square
     public void changeSize() {
         if (mPaint.getStrokeWidth() == 10) {
             mPaint.setStrokeWidth(15);
@@ -206,6 +204,7 @@ public class Drawer extends android.support.v7.widget.AppCompatImageView{
         }
     }
 
+    //changeShape is called to change the variable that determines the shape being drawn
     public void changeShape() {
         if (currentShape == Shape.LINE) {
             currentShape = Shape.SQUARE;
@@ -214,12 +213,14 @@ public class Drawer extends android.support.v7.widget.AppCompatImageView{
         }
     }
 
- @Override
- public void setImageBitmap(Bitmap bm)
- {
+    //setImageBitmap receives the Bitmap from either the camera or gallery and sets it as the base
+            //of the drawing, then clears the canvas.
+    @Override
+    public void setImageBitmap(Bitmap bm)
+    {
      Drawable drawable = new BitmapDrawable(bm);
      this.setBackgroundDrawable(drawable);
      clearDrawing();
- }
+    }
 }
 

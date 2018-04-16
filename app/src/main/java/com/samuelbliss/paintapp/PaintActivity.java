@@ -1,41 +1,26 @@
 package com.samuelbliss.paintapp;
-
-
-import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
-import android.widget.ImageView;
-
-import java.io.File;
+import android.widget.Toast;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class PaintActivity extends AppCompatActivity {
 
-    Button cameraBtn;
-    Button galleryBtn;
-    Drawer paintView;
+    private static final int PERMISSION_REQUEST_CODE = 1;
 
+    //set up initial static variables and the Drawer view
+    private Drawer paintView;
     private static final String IMAGE_DIR = "/images";
     private static final int CAMERA = 2000;
     private static final int GALLERY = 2500;
@@ -45,8 +30,15 @@ public class PaintActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_paint);
 
-        cameraBtn = (Button) findViewById(R.id.camera_bt);
-        cameraBtn.setOnClickListener(new View.OnClickListener() {
+        // Android devices newer than SDK 23 needs to ask permission to Read/Write
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (!checkPermission()) {
+                requestPermission();
+            }
+        }
+
+        //Camera Button creates intent that allows you to take a picture.
+        findViewById(R.id.camera_bt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
@@ -54,8 +46,8 @@ public class PaintActivity extends AppCompatActivity {
             }
         });
 
-        galleryBtn = (Button) findViewById(R.id.gallery_bt);
-        galleryBtn.setOnClickListener(new View.OnClickListener() {
+        //Gallery Button creates intent that allows you to choose a photo from the gallery.
+        findViewById(R.id.gallery_bt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -63,10 +55,11 @@ public class PaintActivity extends AppCompatActivity {
             }
         });
 
+        //Initialize paintView Drawer
         paintView = (Drawer) findViewById(R.id.paint_iv);
 
 
-
+        //Clear button calls the Drawer clearDrawing function
         findViewById(R.id.clear_bt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,17 +67,17 @@ public class PaintActivity extends AppCompatActivity {
             }
         });
 
+        //Save button calls the Drawer saveDrawing function to get the edited image
+                //Then calls the insertImage function to save in storage.
         findViewById(R.id.save_bt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    paintView.saveDrawing();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Bitmap b = paintView.saveDrawing();
+                MediaStore.Images.Media.insertImage(getContentResolver(), b, "" , "");
             }
         });
 
+        //Initialize color button and set up the listener to change text and run changeColor() every click.
         final Button colorB = (Button) findViewById(R.id.color_bt);
         colorB.setText("RED");
         colorB.setOnClickListener(new View.OnClickListener() {
@@ -105,6 +98,7 @@ public class PaintActivity extends AppCompatActivity {
             }
         });
 
+        //Initialize size button, setup the listener to change text and run changeSize() every click.
         final Button sizeB = (Button) findViewById(R.id.size_bt);
         sizeB.setText("SMALL");
         sizeB.setOnClickListener(new View.OnClickListener() {
@@ -124,6 +118,8 @@ public class PaintActivity extends AppCompatActivity {
                 paintView.changeSize();
             }
         });
+
+        //Initialize shape button, setup the listener to change text and run changeShape() every click.
         final Button shapeB = (Button) findViewById(R.id.shape_bt);
         shapeB.setText("LINE");
         shapeB.setOnClickListener(new View.OnClickListener() {
@@ -140,16 +136,20 @@ public class PaintActivity extends AppCompatActivity {
 
     }
 
+    //When camera/gallery is clicked they call onActivityResult
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        //When Camera button is clicked take a picture and send it to the Drawer
         if (requestCode == CAMERA) {
             if (data != null) {
                 Bitmap image = (Bitmap) data.getExtras().get("data");
                 paintView.setImageBitmap(image);
             }
-        } else if (requestCode == GALLERY) {
+        }
+        //When Gallery button is clicked get a saved picture and send it to the Drawer
+        else if (requestCode == GALLERY) {
             if (data != null) {
                 Uri contentUri = data.getData();
                 try {
@@ -161,6 +161,25 @@ public class PaintActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    //Check permission for READ/WRITE
+    private boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission(PaintActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (result == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //Request permission for READ/WRITE if it isn't already granted
+    private void requestPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(PaintActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            Toast.makeText(PaintActivity.this, "Write External Storage permission allows us to do store images. Please allow this permission in App Settings.", Toast.LENGTH_LONG).show();
+        } else {
+            ActivityCompat.requestPermissions(PaintActivity.this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
         }
     }
 }
