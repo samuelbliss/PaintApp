@@ -73,6 +73,18 @@ public class PaintActivity extends AppCompatActivity {
                 paintView.clearDrawing();
             }
         });
+
+        findViewById(R.id.save_bt).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    paintView.saveDrawing();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         final Button colorB = (Button) findViewById(R.id.color_bt);
         colorB.setText("RED");
         colorB.setOnClickListener(new View.OnClickListener() {

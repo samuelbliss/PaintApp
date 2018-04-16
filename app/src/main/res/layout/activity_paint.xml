@@ -96,6 +96,16 @@
         app:layout_constraintTop_toBottomOf="@+id/paint_iv" />
 
     <Button
+        android:id="@+id/save_bt"
+        android:layout_width="79dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="8dp"
+        android:text="Save"
+        android:textSize="13sp"
+        app:layout_constraintStart_toEndOf="@+id/clear_bt"
+        app:layout_constraintTop_toBottomOf="@+id/paint_iv" />
+
+    <Button
         android:id="@+id/camera_bt"
         android:layout_width="79dp"
         android:layout_height="39dp"
