@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,30 +7,45 @@
     android:orientation="vertical"
     tools:context="com.samuelbliss.paintapp.MainActivity">
 
-    <Button
-        android:id="@+id/gallery_btn"
+
+    <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Open Gallery" />
+        android:layout_marginBottom="89dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="casual"
+        android:text="Image Painter"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_blue_bright"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/menu_paint_bt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/camera_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Open Camera" />
+        android:id="@+id/menu_paint_bt"
+        android:layout_width="173dp"
+        android:layout_height="67dp"
+        android:layout_marginBottom="78dp"
+        android:text="Paint!"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/menu_about_bt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:scaleType="fitXY"
-        android:src="@mipmap/ic_launcher"
-        android:id="@+id/iv"/>
-
-</LinearLayout>
+    <Button
+        android:id="@+id/menu_about_bt"
+        android:layout_width="175dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="143dp"
+        android:text="About"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/menu_paint_bt" />
+</android.support.constraint.ConstraintLayout>
