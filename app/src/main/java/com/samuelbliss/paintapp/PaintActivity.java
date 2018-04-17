@@ -157,7 +157,7 @@ public class PaintActivity extends AppCompatActivity {
             }
         });
 
-        // Extra #2 calls the mirror button and uses Matriz class to create a new image out of the
+        // Extra #2 calls the mirror button and uses Matrix class to create a new image out of the
         // uploaded image but switches it to the mirror image or the original. The custom class
         // Drawer variable paintView sets the new image with the created one.
         final Button mirrorB = (Button)findViewById(R.id.mirror_bt);
