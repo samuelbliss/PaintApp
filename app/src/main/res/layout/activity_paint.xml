@@ -30,11 +30,13 @@
     <Button
         android:id="@+id/size_bt"
         android:layout_width="wrap_content"
-        android:layout_height="37dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="11dp"
         android:layout_marginEnd="16dp"
         android:text="SIZE"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shape_bt" />
+        app:layout_constraintTop_toBottomOf="@+id/grey_bt" />
 
     <Button
         android:id="@+id/color_bt"
@@ -48,22 +50,26 @@
     <TextView
         android:id="@+id/textView5"
         android:layout_width="85dp"
-        android:layout_height="21dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="57dp"
         android:layout_marginStart="16dp"
         android:text="Load Photo:"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/camera_bt"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mirror_bt" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="53dp"
-        android:layout_height="21dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="18dp"
         android:layout_marginTop="16dp"
         android:text="Size:"
         android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/size_bt"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/invert_bt" />
 
     <TextView
         android:id="@+id/textView4"
@@ -88,12 +94,14 @@
     <Button
         android:id="@+id/clear_bt"
         android:layout_width="79dp"
-        android:layout_height="39dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="86dp"
         android:layout_marginStart="16dp"
         android:text="Clear"
         android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/paint_iv" />
+        app:layout_constraintTop_toBottomOf="@+id/rotate_bt" />
 
     <Button
         android:id="@+id/save_bt"
@@ -125,5 +133,60 @@
         android:textSize="13sp"
         app:layout_constraintStart_toEndOf="@+id/camera_bt"
         app:layout_constraintTop_toBottomOf="@+id/paint_iv" />
+
+    <Button
+        android:id="@+id/rotate_bt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="338dp"
+        android:text="Rotate"
+        app:layout_constraintBottom_toTopOf="@+id/clear_bt"
+        app:layout_constraintEnd_toStartOf="@+id/mirror_bt"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <Button
+        android:id="@+id/mirror_bt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="385dp"
+        android:text="Mirror"
+        app:layout_constraintBottom_toTopOf="@+id/textView5"
+        app:layout_constraintEnd_toStartOf="@+id/invert_bt"
+        app:layout_constraintStart_toEndOf="@+id/rotate_bt"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="95dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <Button
+        android:id="@+id/invert_bt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="424dp"
+        android:layout_marginEnd="2dp"
+        android:text="Invert"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toStartOf="@+id/grey_bt"
+        app:layout_constraintStart_toEndOf="@+id/mirror_bt"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="190dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <Button
+        android:id="@+id/grey_bt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="415dp"
+        android:layout_marginEnd="9dp"
+        android:text="Grey"
+        app:layout_constraintBottom_toTopOf="@+id/size_bt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/invert_bt"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="287dp"
+        tools:layout_editor_absoluteY="0dp" />
 
 </android.support.constraint.ConstraintLayout>

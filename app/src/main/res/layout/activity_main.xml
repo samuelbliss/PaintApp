@@ -4,16 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/phone"
     android:orientation="vertical"
-    tools:context="com.samuelbliss.paintapp.MainActivity">
+    tools:context="com.samuelbliss.paintapp.MainActivity"
+    tools:layout_editor_absoluteY="81dp">
 
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="89dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginTop="15dp"
         android:fontFamily="casual"
         android:text="Image Painter"
         android:textAlignment="center"
@@ -28,8 +30,8 @@
     <Button
         android:id="@+id/menu_paint_bt"
         android:layout_width="173dp"
-        android:layout_height="67dp"
-        android:layout_marginBottom="78dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="222dp"
         android:text="Paint!"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/menu_about_bt"
@@ -40,8 +42,8 @@
     <Button
         android:id="@+id/menu_about_bt"
         android:layout_width="175dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="143dp"
+        android:layout_height="64dp"
+        android:layout_marginBottom="60dp"
         android:text="About"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"

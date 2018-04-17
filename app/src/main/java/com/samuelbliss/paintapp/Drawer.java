@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.BitmapDrawable;
@@ -212,6 +213,7 @@ public class Drawer extends android.support.v7.widget.AppCompatImageView{
             currentShape = Shape.LINE;
         }
     }
+
 
     //setImageBitmap receives the Bitmap from either the camera or gallery and sets it as the base
             //of the drawing, then clears the canvas.
