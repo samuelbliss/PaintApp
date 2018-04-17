@@ -4,5 +4,7 @@
     gallery for you choose a photo. Camera will open the default camera app and you can take a photo. The photo will appear above camera and gallery buttons. Once there is a photo you will be able draw lines
     and/or add shapes. Pressing the color button will allow you to chose from the colors Red, Blue, Green, White, or Black. Pressing the shape button allows you to select a line or square to draw on the photo. Pressing the size
     button will make the line or rectangle extra small, small, medium, large, or extra large. The buttons up top allow you to rotate, mirror, invert the colors, and/or make the photo grey scale. Pressing the clear button
-    at any time will clear the edits and start with the original photo. When you are done editing you can press the save button and the image with the edits will be saved to your photo gallery. Have fun and enjoy the app!</string>
+    at any time will clear the edits and start with the original photo. When you are done editing you can press the save button and the image with the edits will be saved to your photo gallery. Have fun and enjoy the app!
+
+    \nPhoto credit: https://www.pexels.com/photo/white-iphone-6-with-black-case-837268/</string>
 </resources>
